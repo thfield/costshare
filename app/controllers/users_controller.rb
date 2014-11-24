@@ -31,6 +31,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         format.html do
+          log_in @user
           flash[:success] = "User successfully created"
           redirect_to @user
         end
