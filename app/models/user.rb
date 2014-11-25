@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 	before_save { self.email = email.downcase }
 
 	has_many :payments
-  has_many :events, through: :payments
+  has_many :memberships
+  has_many :events, :through => :memberships
 
   validates :name, 	presence:true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -16,6 +17,8 @@ class User < ActiveRecord::Base
 	#implement 'clearance' for auth/auth: https://github.com/thoughtbot/clearance                   
   #has_secure_password
 	#validates :password, length: { minimum:6 }
+
+  #add activation and password reset: https://www.railstutorial.org/book/account_activation_password_reset
 
   # Returns a random token.
   def User.new_token

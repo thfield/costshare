@@ -1,8 +1,10 @@
+<% provide(:title, 'All Payments') %>
 <h1>Listing payments</h1>
 
 <table>
   <thead>
     <tr>
+      <th>Date</th>
       <th>Amount</th>
       <th>Description</th>
       <th>Event</th>
@@ -14,7 +16,8 @@
   <tbody>
     <% @payments.each do |payment| %>
       <tr>
-        <td><%= payment.amount %></td>
+        <td><%= payment.transaction_date.to_date %></td>
+        <td><%= payment.amount.round(2) %></td>
         <td><%= payment.description %></td>
         <td><%= payment.event_id %></td>
         <td><%= payment.user_id %></td>

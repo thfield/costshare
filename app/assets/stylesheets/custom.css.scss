@@ -176,3 +176,7 @@ input {
     border-bottom: 1px solid $gray-lighter;
   }
 }
+
+td:not(:first-child), th:not(:first-child) {
+  padding-left: 10px;
+}

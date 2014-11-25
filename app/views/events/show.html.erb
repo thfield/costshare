@@ -1,9 +1,60 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
+<% provide(:title, @event.name) %>
+<h1>
   <%= @event.name %>
-</p>
+</h1>
+
+
+
+<div>
+	<strong>Payments:</strong>
+	<table>
+	  <thead>
+	    <tr>
+	      <th>Date</th>
+	      <th>Amount</th>
+	      <th>Description</th>
+	      <th>User</th>
+	      <th colspan="2"></th>
+	    </tr>
+	  </thead>
+		<tbody>
+	    <% @event.payments.each do |payment| %>
+	      <tr>
+	        <td><%= payment.transaction_date.to_date %></td>
+	        <td><%= payment.amount.round(2) %></td>
+	        <td><%= payment.description %></td>
+	        <td><%= @event.users.find(payment.user_id).name %></td>
+	        <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
+	        <td><%= link_to 'Destroy', payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+	      </tr>
+	    <% end %>
+	    <tr>
+	    	<td>Total:</td>
+	    	<td><%= @event.payments.inject(0){|sum,e| sum += e.amount }.round(2) %> </td>
+	    </tr>
+	  </tbody>
+	 </table>
+</div>
+
+<div>
+	<strong>Members:</strong>
+	<table>
+	  <thead>
+	    <tr>
+	      <th>Name</th>
+	      <th>Amount Spent</th>
+	    </tr>
+	  </thead>
+		<tbody>
+	    <% @event.users.each do |u| %>
+	      <tr>
+	        <td><%= u.name %></td>
+	        <td><%= @event.payments.select{|payment| payment.user_id == u.id}.map(&:amount).sum.round(2) %></td>
+	      </tr>
+	    <% end %>
+	  </tbody>
+	 </table>
+</div>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>
