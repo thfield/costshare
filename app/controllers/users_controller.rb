@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-
+    @events = @user.events.paginate(page: params[:page])
   end
 
   # GET /users/new

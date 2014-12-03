@@ -17,7 +17,7 @@ User.create!(name:  "Admin",
 end
 
 Event.create!(name: "Vacation",
-							user_id:1)
+							user_id:2)
 
 5.times do |n|
 	Membership.create!(user_id: n+1, event_id: 1)

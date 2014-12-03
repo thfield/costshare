@@ -1,7 +1,38 @@
 <% provide(:title, 'Edit event') %>
 <h1>Editing event</h1>
 
-<%= render 'form' %>
+<%= form_for(@event) do |f| %>
+  <% if @event.errors.any? %>
+    <%= render "error_template" %>
+  <% end %>
 
-<%= link_to 'Show', @event %> |
-<%= link_to 'Back', events_path %>
+  <%= f.label :name, "Event Name:" %>
+  <%= f.text_field :name %> <br />
+  
+
+  <% @event.payments.each do |payment| %>
+	  <% if payment.user_id == current_user.id || @event.user_id == current_user.id || current_user.admin == true %>
+	  	<%= f.fields_for :payments, payment do |p| %>
+        <%= p.text_field :transaction_date %>
+        <%= p.text_field :amount %>
+        <%= p.text_field :description %>
+        <%= @event.users.find(payment.user_id).name %>
+        <%= p.check_box :_destroy %>
+        <%= p.label :_destroy, "Remove Payment" %>
+        <br />
+		<% end %>
+	  <% else %>
+	  	<%= payment.transaction_date %>
+  		<%= payment.amount.round(2) %>
+  		<%= payment.description %>
+  		<%= @event.users.find(payment.user_id).name %>
+  		<br />
+	  <% end %>	
+  <% end %>
+  Add Payment <br/>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @event %>

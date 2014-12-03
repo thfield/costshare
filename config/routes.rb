@@ -10,8 +10,10 @@ Rails.application.routes.draw do
   post    'login'     => 'sessions#create'
   delete  'logout'    => 'sessions#destroy'
 
-  resources :payments
-  resources :events
+  resources :events do
+    get 'payments', on: :member
+  end
+  #resources :payments
   resources :users
 
 

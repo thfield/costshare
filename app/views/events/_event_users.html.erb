@@ -1,0 +1,9 @@
+<% total = @event.payments.inject(0){|sum,e| sum += e.amount }.round(2) %>
+<% @event.users.each do |u| %>
+  <tr>
+    <td><%= u.name %></td>
+    <td><%= spent = @event.payments.select{|payment| payment.user_id == u.id}.map(&:amount).sum.round(2) %></td>
+    <td><%= share = total/@event.users.count %></td>
+    <td><%= owed = spent-share %></td>
+  </tr>
+<% end %>

@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :payments]
 
   # GET /events
   # GET /events.json
@@ -38,16 +38,11 @@ class EventsController < ApplicationController
   end
 
   # PATCH/PUT /events/1
-  # PATCH/PUT /events/1.json
   def update
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+    if @event.update(event_params)
+      redirect_to @event, notice: 'Event was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -61,6 +56,16 @@ class EventsController < ApplicationController
     end
   end
 
+  def calculate
+    total = @event.payments.inject(0){|sum,e| sum += e.amount }
+    @event.total = total
+    @event.memberships.each do |membership|
+        membership.spent = @event.payments.select{|payment| payment.user_id == membership.user_id}.map(&:amount).sum
+        membership.share = total/@event.users.count
+        membership.owed = membership.spent-membership.share
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -69,6 +74,8 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:name)
+      params.require(:event).permit(:name,
+        :payments_attributes => [:id, :amount, :description, :transaction_date]
+        )
     end
 end

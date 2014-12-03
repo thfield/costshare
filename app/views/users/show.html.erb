@@ -1,21 +1,27 @@
 <% provide(:title, @user.name) %>
+
+
 <h1>
   <%= @user.name %>
 </h1>
-<p id="notice"><%= notice %></p>
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
 
-<p>
-  <strong>Password:</strong>
-  <%= @user.password %>
-</p>
+<div class="row">
+  <div class="span8">
+    <% if @user.events.any? %>
+      <h3>Events: (<%= @user.events.count %>)</h3>
+      <ol class="events">
+        
+        <% @user.events.each do |event| %>
+          <%= link_to event.name, event %>
+          <% if event.user_id == current_user.id %>
+            This is your event
+          <% end %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+          <br />
+        <% end %>
+
+      </ol>
+      <%= will_paginate @events %>
+    <% end %>
+  </div>
+</div>

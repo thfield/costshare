@@ -1,20 +1,18 @@
 <%= form_for(@event) do |f| %>
   <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-
-      <ul>
-      <% @event.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+    <%= render "error_template" %>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  
+
+  <% f.fields_for @event.payments do |p| %>
+    <div class="field">
+    <%= p.label :transaction_date %>
+    <%= p.text_field :transaction_date %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= f.submit %>

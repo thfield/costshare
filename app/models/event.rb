@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :payments, 
            :reject_if => :all_blank, 
            :allow_destroy => true
+
+  accepts_nested_attributes_for :memberships         
            
   validates :user_id, presence: true
 
