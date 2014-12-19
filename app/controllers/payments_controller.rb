@@ -1,5 +1,6 @@
 class PaymentsController < ApplicationController
-  before_action :set_payment, only: [:show, :edit, :update, :destroy]
+  before_action :set_payment,    only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,   only: :destroy
 
   # GET /payments
   # GET /payments.json
@@ -55,6 +56,7 @@ class PaymentsController < ApplicationController
   # DELETE /payments/1.json
   def destroy
     @payment.destroy
+    flash[:success] = "Entry deleted"
     respond_to do |format|
       format.html { redirect_back_or payments_url }
       format.json { head :no_content }
@@ -70,5 +72,10 @@ class PaymentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_params
       params.require(:payment).permit(:amount, :description, :event_id, :user_id)
+    end
+
+    def correct_user
+      @payment = current_user.payments.find_by(id: params[:id])
+      redirect_to root_url if @payment.nil?
     end
 end

@@ -19,6 +19,7 @@
         <%= @event.users.find(payment.user_id).name %>
         <%= p.check_box :_destroy %>
         <%= p.label :_destroy, "Remove Payment" %>
+        
         <br />
 		<% end %>
 	  <% else %>
