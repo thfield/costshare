@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :events do
     get 'payments', on: :member
   end
-  #resources :payments
+  resources :payments
   resources :users
 
 

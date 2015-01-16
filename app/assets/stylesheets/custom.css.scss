@@ -1,14 +1,36 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import url(http://fonts.googleapis.com/css?family=Acme|Source+Code+Pro|Trocchi|Open+Sans);
 
 /* mixins, variables, etc. */
 
 $gray-medium-light: #eaeaea;
+$negative-color: #A91101;
+$main-color: #CFB53B;
+$main-color-highlight: #FFDB58;
+$off-white-bg: #DCDCDC;
+$off-white-bg2: #F5F5F5;
+$dark-bg-color: #535C63;
+$dimmed: #535C63;
+
+$sans-font: 'Open Sans', sans-serif;
+$highlight-font: 'Acme', sans-serif;
+$serif-font: 'Trocchi', serif;
+$mono-font: 'Source Code Pro', monospace;
 
 @mixin box_sizing {
   -moz-box-sizing:    border-box;
   -webkit-box-sizing: border-box;
   box-sizing:         border-box;
+}
+
+/* bootstrap overrides */
+
+.navbar {
+  background-color: $dark-bg-color;
+}
+.nav {
+  font-family: $highlight-font;
 }
 
 /* universal */
@@ -18,7 +40,9 @@ html {
 }
 
 body {
+  font-family: $sans-font;
   padding-top: 60px;
+  background-color: $off-white-bg;
 }
 
 section {
@@ -48,6 +72,7 @@ h1 {
   letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
+  font-family: $mono-font;
 }
 
 h2 {
@@ -56,7 +81,7 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: #777;
+  color: $dimmed;
 }
 
 p {
@@ -67,10 +92,11 @@ p {
 /* header */
 
 #logo {
+  font-family: $highlight-font;
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: #fff;
+  color: $main-color;
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
@@ -78,7 +104,7 @@ p {
 }
 
 #logo:hover {
-  color: #fff;
+  color: $main-color-highlight;
   text-decoration: none;
 }
 
@@ -179,4 +205,9 @@ input {
 
 td:not(:first-child), th:not(:first-child) {
   padding-left: 10px;
+}
+
+/*  */
+.negative {
+  color: $negative-color;
 }

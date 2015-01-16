@@ -11,7 +11,7 @@ User.create!(name:  "Admin",
 
 12.times do |n|
   name  = Faker::Name.name
-  email = "example-#{n+1}@example.com"
+  email = "example-#{n+2}@example.com"
   User.create!(name:  name,
                email: email)
 end

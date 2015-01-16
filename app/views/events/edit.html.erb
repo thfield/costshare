@@ -5,35 +5,48 @@
   <% if @event.errors.any? %>
     <%= render "error_template" %>
   <% end %>
-
-  <%= f.label :name, "Event Name:" %>
-  <%= f.text_field :name %> <br />
   
-
-  <% @event.payments.each do |payment| %>
-	  <% if payment.user_id == current_user.id || @event.user_id == current_user.id || current_user.admin == true %>
-	  	<%= f.fields_for :payments, payment do |p| %>
-        <%= p.text_field :transaction_date %>
-        <%= p.text_field :amount %>
-        <%= p.text_field :description %>
-        <%= @event.users.find(payment.user_id).name %>
-        <%= p.check_box :_destroy %>
-        <%= p.label :_destroy, "Remove Payment" %>
-        
-        <br />
-		<% end %>
-	  <% else %>
-	  	<%= payment.transaction_date %>
-  		<%= payment.amount.round(2) %>
-  		<%= payment.description %>
-  		<%= @event.users.find(payment.user_id).name %>
-  		<br />
-	  <% end %>	
-  <% end %>
-  Add Payment <br/>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group form-horizontal">
+    <%= f.label :name, "Event Name:" %>
+    <%= f.text_field :name, :class => "form-control" %>
   </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>User</th>
+        <th colspan="1"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+  	  <%= f.fields_for :payments do |payment_form| %>
+        <tr>            
+          <td><%= payment_form.text_field :transaction_date, :class => "form-control" %></td>
+          <td><%= payment_form.text_field :amount, :class => "form-control" %></td>
+          <td><%= payment_form.text_field :description, :class => "form-control" %></td>
+          <td><%= payment_form.text_field :user_id, readonly: true, :class => "form-control" %></td>
+          <td><span class="checkbox-inline"><%= payment_form.check_box :_destroy %> <%= payment_form.label :_destroy, 'Delete' %></span></td>
+        </tr>
+      <% end %>
+      
+      <tr>
+        <td>
+          <%= link_to "Add Payment", new_payment_path, :event_id => @event.id, :class => "btn btn-success" %>
+        </td>
+        <td colspan="4"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <%= f.submit "Save", :class => "btn btn-primary" %>
+
 <% end %>
 
-<%= link_to 'Show', @event %>
+<br />
+
+<%= link_to 'Show', @event, :class => "btn btn-info" %>

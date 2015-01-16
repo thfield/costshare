@@ -1,31 +1,9 @@
-<%= form_for(@payment) do |f| %>
-  <% if @payment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
-
-      <ul>
-      <% @payment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :transaction_date %><br>
-    <%= f.text_field :transaction_date %>
-  </div>
-
-  <div class="field">
-    <%= f.label :amount %><br>
-    <%= f.text_field :amount %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<%= f.fields_for :payments, payment do |p| %>
+        <%= p.text_field :transaction_date %>
+        <%= p.text_field :amount %>
+        <%= p.text_field :description %>
+        <%= @event.users.find(payment.user_id).name %>
+        <%= p.check_box :_destroy %>
+        <%= p.label :_destroy, "Remove Payment" %>
+        <br />
+<% end %>        

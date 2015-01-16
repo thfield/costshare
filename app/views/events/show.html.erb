@@ -3,44 +3,54 @@
   <%= @event.name %>
 </h1>
 
-<div>
-	<strong>Payments:</strong>
-	<table>
-	  <thead>
-	    <tr>
-	      <th>Date</th>
-	      <th>Amount</th>
-	      <th>Description</th>
-	      <th>User</th>
-	      <th colspan="1"></th>
-	    </tr>
-	  </thead>
-		<tbody>
-	    <%= render "event_payments" %>
-	    <tr>
-	    	<td>Total:</td>
-	    	<td><%= total = @event.payments.inject(0){|sum,e| sum += e.amount }.round(2) %> </td>
-	    </tr>
-	  </tbody>
-	 </table>
+<% if @event.user_id == current_user.id  %>
+<h2>This event belongs to you</h2>
+<% end %>
+
+<div class="row">
+	<div class="col-md-12">
+		<strong>Payments:</strong>
+		<table class="table table-hover">
+		  <thead>
+		    <tr>
+		      <th>Date</th>
+		      <th>Amount</th>
+		      <th>Description</th>
+		      <th>User</th>
+		      <th colspan="1"></th>
+		    </tr>
+		  </thead>
+			<tbody>
+		    <%= render "event_payments" %>
+		    <tr>
+		    	<td>Total:</td>
+		    	<td><%= total = @event.payments.inject(0){|sum,e| sum += e.amount }.round(2) %> </td>
+		    	<td colspan="3"></td>
+		    </tr>
+		  </tbody>
+		 </table>
+	</div>
 </div>
 
-<div>
-	<strong>Members:</strong>
-	<table>
-	  <thead>
-	    <tr>
-	      <th>Name</th>
-	      <th>Amount Spent</th>
-	      <th>Share</th>
-	      <th>Owed</th>
-	    </tr>
-	  </thead>
-		<tbody>
-	    <%= render "event_users" %>
-	  </tbody>
-	 </table>
+<div class="row">
+	<div class="col-md-6">
+		<strong>Members:</strong>
+		<table class="table table-condensed">
+		  <thead>
+		    <tr>
+		      <th>Name</th>
+		      <th>Amount Spent</th>
+		      <th>Share</th>
+		      <th>Owed</th>
+		    </tr>
+		  </thead>
+			<tbody>
+		    <%= render "event_users" %>
+		  </tbody>
+		 </table>
+	</div>
 </div>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to 'Edit', edit_event_path(@event), :class => "btn btn-default" %> 
+</br>
+<%= link_to 'All Events', events_path %>

@@ -16,6 +16,7 @@ class PaymentsController < ApplicationController
   # GET /payments/new
   def new
     @payment = Payment.new
+    @event = Event.find(params[:event_id])
   end
 
   # GET /payments/1/edit
@@ -25,6 +26,15 @@ class PaymentsController < ApplicationController
   # POST /payments
   # POST /payments.json
   def create
+    @payment = current_user.payments.build(payment_params)
+    if @payment.save
+      flash[:success] = "Entry logged!"
+      redirect_to root_url
+    else
+      render 'static_pages/home'
+    end
+
+
     @payment = Payment.new(payment_params)
 
     respond_to do |format|
@@ -57,10 +67,7 @@ class PaymentsController < ApplicationController
   def destroy
     @payment.destroy
     flash[:success] = "Entry deleted"
-    respond_to do |format|
-      format.html { redirect_back_or payments_url }
-      format.json { head :no_content }
-    end
+    redirect_to request.referrer || root_url
   end
 
   private

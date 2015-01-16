@@ -4,6 +4,13 @@
     <td><%= u.name %></td>
     <td><%= spent = @event.payments.select{|payment| payment.user_id == u.id}.map(&:amount).sum.round(2) %></td>
     <td><%= share = total/@event.users.count %></td>
-    <td><%= owed = spent-share %></td>
+    <% owed = spent-share %>
+    <% if owed < 0 %>
+    	<td class="negative">
+    <% else %>
+    	<td>
+    <% end %>
+
+    <%= owed %></td>
   </tr>
 <% end %>

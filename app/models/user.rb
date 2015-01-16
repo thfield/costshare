@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
 
 
-	#implement 'clearance' for auth/auth: https://github.com/thoughtbot/clearance                   
+	#implement 'clearance' for authent/authoriz: https://github.com/thoughtbot/clearance                   
   #has_secure_password
 	#validates :password, length: { minimum:6 }
 
