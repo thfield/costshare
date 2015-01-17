@@ -24,29 +24,20 @@
 
     <tbody>
   	  <%= f.fields_for :payments do |payment_form| %>
-        <tr>            
-          <td><%= payment_form.text_field :transaction_date, :class => "form-control" %></td>
-          <td><%= payment_form.text_field :amount, :class => "form-control" %></td>
-          <td><%= payment_form.text_field :description, :class => "form-control" %></td>
-          <td><%= payment_form.text_field :user_id, readonly: true, :class => "form-control" %></td>
-          <td><span class="checkbox-inline"><%= payment_form.check_box :_destroy %> <%= payment_form.label :_destroy, 'Delete' %></span></td>
-        </tr>
+        <%= render "payment_fields", :f => payment_form %>
       <% end %>
       
-      <tr>
-        <td>
-          <%= link_to "Add Payment", new_payment_path, :event_id => @event.id, :class => "btn btn-success" %>
-        </td>
-        <td colspan="4"></td>
-      </tr>
+      
     </tbody>
   </table>
 
+  <%= link_to_add_fields "Add a Payment", f, :payments, "btn btn-success", "Add a new Payment" %>
   
   <%= f.submit "Save", :class => "btn btn-primary" %>
 
 <% end %>
 
+  
 <br />
 
 <%= link_to 'Show', @event, :class => "btn btn-info" %>

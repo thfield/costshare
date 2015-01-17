@@ -21,7 +21,14 @@
 		    </tr>
 		  </thead>
 			<tbody>
-		    <%= render "event_payments" %>
+		    <% @event.payments.each do |payment| %>
+				  <tr>
+				    <td><%= payment.transaction_date.to_date %></td>
+				    <td><%= payment.amount.round(2) %></td>
+				    <td><%= payment.description %></td>
+				    <td><%= @event.users.find(payment.user_id).name %></td>
+				  </tr>
+				<% end %>
 		    <tr>
 		    	<td>Total:</td>
 		    	<td><%= total = @event.payments.inject(0){|sum,e| sum += e.amount }.round(2) %> </td>
