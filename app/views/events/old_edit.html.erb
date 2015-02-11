@@ -1,0 +1,52 @@
+<% provide(:title, 'Edit event') %>
+<h1>Editing event</h1>
+
+<%= form_for(@event) do |f| %>
+  <% if @event.errors.any? %>
+    <%= render "error_template" %>
+  <% end %>
+
+  <%= f.label :name, "Event Name:" %>
+  <%= f.text_field :name %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>User</th>
+        <th colspan="1"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @event.payments.each do |payment| %>
+    	  <% if payment.user_id == current_user.id || @event.user_id == current_user.id || current_user.admin == true %>
+          <%= f.fields_for payment do |p| %>
+          <tr>
+    	  	  <%= render 'payments/payment_fields',  :f => p %>
+            <td><%= @event.users.find(payment.user_id).name %></td>
+            <td><%= link_to '<span class="glyphicon glyphicon-remove-circle"></span>'.html_safe, payment, method: :delete, data: { confirm: "Permanently delete?" } %></td>
+          </tr>
+    		  <% end %>
+    	  <% else %>
+    	  	<%= render payment %>
+      		<br />
+    	  <% end %>	
+      <% end %>
+      <tr>
+        <td>
+          <%= link_to "Add Payment", new_payment_path, :event_id => @event.id, :class => "btn btn-default" %>
+        </td>
+        <td colspan="4"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  
+  <%= f.submit "Save", :class => "btn btn-primary" %>
+
+<% end %>
+
+<%= link_to 'Show', @event %>
